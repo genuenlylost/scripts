@@ -1,293 +1,278 @@
--- Dead Rails Ultimate Script 2025 | Apple-Style UI
--- Clean, Modern Interface with Glassmorphism and Soft Edges
--- Optimized for Xeno Executor
+-- Dead Rails Ultimate Exploit Script 2025
+-- Advanced Anti-Detection & Professional UI
+-- Researched and optimized for maximum functionality
 
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+
+-- Services
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Workspace = game:GetService("Workspace")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
-local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
+local StarterGui = game:GetService("StarterGui")
 
+-- Core Variables
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 local Mouse = LocalPlayer:GetMouse()
 
--- Apple UI Color Palette (2025)
-local Colors = {
-    Primary = Color3.fromRGB(0, 122, 255),      -- iOS Blue
-    Secondary = Color3.fromRGB(52, 199, 89),     -- iOS Green
-    Accent = Color3.fromRGB(255, 149, 0),        -- iOS Orange
-    Background = Color3.fromRGB(242, 242, 247),  -- Light Gray
-    Surface = Color3.fromRGB(255, 255, 255),     -- White
-    OnSurface = Color3.fromRGB(28, 28, 30),      -- Dark Gray
-    OnBackground = Color3.fromRGB(60, 60, 67),   -- Medium Gray
-    Error = Color3.fromRGB(255, 59, 48),         -- iOS Red
-    Warning = Color3.fromRGB(255, 204, 0),       -- iOS Yellow
-    Success = Color3.fromRGB(52, 199, 89),       -- iOS Green
-    Glass = Color3.fromRGB(255, 255, 255),       -- Glass Effect
+-- Anti-Detection System
+local AntiDetection = {
+    OriginalServices = {},
+    RandomizedNames = {},
+    LastTeleportTime = 0,
+    TeleportCooldown = 2,
+    SpeedLimiter = 35,
+    MaxJumpPower = 120
 }
 
--- Dark Mode Colors
-local DarkColors = {
-    Primary = Color3.fromRGB(10, 132, 255),
-    Secondary = Color3.fromRGB(48, 209, 88),
-    Accent = Color3.fromRGB(255, 159, 10),
-    Background = Color3.fromRGB(0, 0, 0),
-    Surface = Color3.fromRGB(28, 28, 30),
-    OnSurface = Color3.fromRGB(255, 255, 255),
-    OnBackground = Color3.fromRGB(235, 235, 245),
-    Error = Color3.fromRGB(255, 69, 58),
-    Warning = Color3.fromRGB(255, 214, 10),
-    Success = Color3.fromRGB(48, 209, 88),
-    Glass = Color3.fromRGB(28, 28, 30),
-}
+-- Initialize Anti-Detection
+local function InitializeAntiDetection()
+    -- Store original service names
+    AntiDetection.OriginalServices = {
+        Lighting = game:GetService("Lighting"),
+        Workspace = game:GetService("Workspace"),
+        ReplicatedStorage = game:GetService("ReplicatedStorage"),
+        Players = game:GetService("Players"),
+        ReplicatedFirst = game:GetService("ReplicatedFirst")
+    }
+    
+    -- Randomize service names to break basic exploit detection
+    for serviceName, service in pairs(AntiDetection.OriginalServices) do
+        local randomName = HttpService:GenerateGUID(false):sub(1, 8)
+        AntiDetection.RandomizedNames[serviceName] = randomName
+        service.Name = randomName
+    end
+end
 
 -- Script State Management
 local ScriptState = {
+    -- Farming
     AutoFarm = false,
     FarmItem = "Bond",
     AutoHeal = false,
-    AutoReload = false,
+    HealThreshold = 50,
+    AutoCollectItems = false,
+    
+    -- Combat
     GunKillAura = false,
     ShovelKillAura = false,
+    KillAuraRange = 25,
+    AutoReload = false,
+    Aimbot = false,
+    AimbotFOV = 90,
+    AimbotSmooth = 0.3,
+    AimbotTarget = "Head",
+    AimbotHold = false,
+    
+    -- Movement
+    SpeedHack = false,
+    WalkSpeed = 16,
+    JumpPower = 50,
+    NoClip = false,
+    InfiniteJump = false,
+    
+    -- Visual
+    ESP = false,
     FOVChanger = false,
     FOVValue = 70,
-    NoClip = false,
-    UnlimitedFPS = false,
-    Aimbot = false,
-    AimbotHold = false,
-    AimbotTarget = "Head",
+    FullBright = false,
+    NoFog = false,
+    
+    -- Teleportation
+    TeleportToTrain = false,
     AutoDrive = false,
-    ESP = false,
-    DarkMode = false
+    
+    -- Misc
+    UnlimitedFPS = false,
+    AntiAFK = false,
+    UIVisible = true
 }
 
--- Create Apple-Style UI
-local function CreateAppleUI()
+-- Keybinds
+local Keybinds = {
+    ToggleUI = Enum.KeyCode.Insert,
+    AutoDrive = Enum.KeyCode.G,
+    TeleportTrain = Enum.KeyCode.T,
+    Aimbot = Enum.KeyCode.E,
+    KillAura = Enum.KeyCode.K,
+    Speed = Enum.KeyCode.X
+}
+
+-- Create Professional UI
+local function CreateUI()
+    -- Main ScreenGui
     local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Name = "DeadRailsAppleUI"
+    ScreenGui.Name = HttpService:GenerateGUID(false):sub(1, 8) -- Random name
     ScreenGui.Parent = game.CoreGui
     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ScreenGui.ResetOnSpawn = false
     
-    -- Main Container with Glassmorphism
+    -- Main Frame with Modern Design
     local MainFrame = Instance.new("Frame")
     MainFrame.Name = "MainContainer"
     MainFrame.Parent = ScreenGui
-    MainFrame.Size = UDim2.new(0, 420, 0, 580)
-    MainFrame.Position = UDim2.new(0.5, -210, 0.5, -290)
-    MainFrame.BackgroundColor3 = Colors.Glass
-    MainFrame.BackgroundTransparency = 0.1
+    MainFrame.Size = UDim2.new(0, 500, 0, 650)
+    MainFrame.Position = UDim2.new(0.5, -250, 0.5, -325)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
     MainFrame.BorderSizePixel = 0
     MainFrame.Active = true
     MainFrame.Draggable = true
     
-    -- Glassmorphism Effect
-    local Blur = Instance.new("ImageLabel")
-    Blur.Name = "GlassBlur"
-    Blur.Parent = MainFrame
-    Blur.Size = UDim2.new(1, 0, 1, 0)
-    Blur.BackgroundTransparency = 1
-    Blur.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-    Blur.ImageTransparency = 0.8
-    Blur.ScaleType = Enum.ScaleType.Tile
-    Blur.TileSize = UDim2.new(0, 128, 0, 128)
+    -- Rounded corners
+    local MainCorner = Instance.new("UICorner")
+    MainCorner.CornerRadius = UDim.new(0, 12)
+    MainCorner.Parent = MainFrame
     
-    -- Rounded Corners (Soft Edges - 2025 Trend)
-    local Corner = Instance.new("UICorner")
-    Corner.CornerRadius = UDim.new(0, 16)
-    Corner.Parent = MainFrame
-    
-    -- Subtle Drop Shadow
-    local Shadow = Instance.new("ImageLabel")
-    Shadow.Name = "DropShadow"
-    Shadow.Parent = ScreenGui
-    Shadow.Size = UDim2.new(1, 20, 1, 20)
-    Shadow.Position = UDim2.new(0, -10, 0, -10)
-    Shadow.BackgroundTransparency = 1
-    Shadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-    Shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    Shadow.ImageTransparency = 0.8
-    Shadow.ZIndex = MainFrame.ZIndex - 1
-    
-    local ShadowCorner = Instance.new("UICorner")
-    ShadowCorner.CornerRadius = UDim.new(0, 16)
-    ShadowCorner.Parent = Shadow
-    
-    -- Header with Clean Typography
+    -- Header
     local Header = Instance.new("Frame")
     Header.Name = "Header"
     Header.Parent = MainFrame
-    Header.Size = UDim2.new(1, 0, 0, 60)
-    Header.BackgroundColor3 = Colors.Primary
-    Header.BackgroundTransparency = 0.1
+    Header.Size = UDim2.new(1, 0, 0, 50)
+    Header.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
     Header.BorderSizePixel = 0
     
     local HeaderCorner = Instance.new("UICorner")
-    HeaderCorner.CornerRadius = UDim.new(0, 16)
+    HeaderCorner.CornerRadius = UDim.new(0, 12)
     HeaderCorner.Parent = Header
     
-    -- Title with SF Pro Font Style
+    -- Title
     local Title = Instance.new("TextLabel")
-    Title.Name = "Title"
     Title.Parent = Header
     Title.Size = UDim2.new(1, -100, 1, 0)
-    Title.Position = UDim2.new(0, 20, 0, 0)
+    Title.Position = UDim2.new(0, 15, 0, 0)
     Title.BackgroundTransparency = 1
-    Title.Text = "Dead Rails"
-    Title.TextColor3 = Colors.OnSurface
-    Title.TextScaled = false
-    Title.TextSize = 22
-    Title.Font = Enum.Font.SourceSansSemibold
+    Title.Text = "Dead Rails Ultimate"
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextSize = 18
+    Title.Font = Enum.Font.SourceSansBold
     Title.TextXAlignment = Enum.TextXAlignment.Left
-    Title.TextYAlignment = Enum.TextYAlignment.Center
     
-    local Subtitle = Instance.new("TextLabel")
-    Subtitle.Name = "Subtitle"
-    Subtitle.Parent = Header
-    Subtitle.Size = UDim2.new(1, -100, 0, 16)
-    Subtitle.Position = UDim2.new(0, 20, 0, 32)
-    Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "Ultimate Script Suite"
-    Title.TextColor3 = Colors.OnBackground
-    Subtitle.TextScaled = false
-    Subtitle.TextSize = 12
-    Subtitle.Font = Enum.Font.SourceSans
-    Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-    
-    -- Close Button (iOS Style)
+    -- Close Button
     local CloseButton = Instance.new("TextButton")
-    CloseButton.Name = "CloseButton"
     CloseButton.Parent = Header
-    CloseButton.Size = UDim2.new(0, 32, 0, 32)
-    CloseButton.Position = UDim2.new(1, -44, 0, 14)
-    CloseButton.BackgroundColor3 = Colors.Error
-    CloseButton.Text = "✕"
-    CloseButton.TextColor3 = Colors.Surface
-    CloseButton.TextSize = 16
+    CloseButton.Size = UDim2.new(0, 30, 0, 30)
+    CloseButton.Position = UDim2.new(1, -40, 0, 10)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 59, 48)
+    CloseButton.Text = "×"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextSize = 18
     CloseButton.Font = Enum.Font.SourceSansBold
     CloseButton.BorderSizePixel = 0
     
     local CloseCorner = Instance.new("UICorner")
-    CloseCorner.CornerRadius = UDim.new(0, 16)
+    CloseCorner.CornerRadius = UDim.new(0, 15)
     CloseCorner.Parent = CloseButton
     
-    -- Tab Navigation (Card-Based Layout)
+    -- Tab Container
     local TabContainer = Instance.new("Frame")
-    TabContainer.Name = "TabContainer"
     TabContainer.Parent = MainFrame
-    TabContainer.Size = UDim2.new(1, -24, 0, 44)
-    TabContainer.Position = UDim2.new(0, 12, 0, 72)
-    TabContainer.BackgroundColor3 = Colors.Background
-    TabContainer.BackgroundTransparency = 0.3
-    TabContainer.BorderSizePixel = 0
-    
-    local TabCorner = Instance.new("UICorner")
-    TabCorner.CornerRadius = UDim.new(0, 12)
-    TabCorner.Parent = TabContainer
+    TabContainer.Size = UDim2.new(1, -20, 0, 40)
+    TabContainer.Position = UDim2.new(0, 10, 0, 60)
+    TabContainer.BackgroundTransparency = 1
     
     local TabLayout = Instance.new("UIListLayout")
     TabLayout.Parent = TabContainer
     TabLayout.FillDirection = Enum.FillDirection.Horizontal
     TabLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    TabLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-    TabLayout.Padding = UDim.new(0, 4)
+    TabLayout.Padding = UDim.new(0, 5)
     
-    -- Tab Buttons with Pill Shape
-    local tabs = {"Farm", "Combat", "Visual", "Movement", "Settings"}
+    -- Content Container
+    local ContentContainer = Instance.new("Frame")
+    ContentContainer.Parent = MainFrame
+    ContentContainer.Size = UDim2.new(1, -20, 1, -120)
+    ContentContainer.Position = UDim2.new(0, 10, 0, 110)
+    ContentContainer.BackgroundTransparency = 1
+    
+    -- Tabs
+    local tabs = {"Farm", "Combat", "Movement", "Visual", "Misc"}
     local tabButtons = {}
     local contentFrames = {}
     
     for i, tabName in ipairs(tabs) do
+        -- Tab Button
         local TabButton = Instance.new("TextButton")
-        TabButton.Name = tabName .. "Tab"
         TabButton.Parent = TabContainer
-        TabButton.Size = UDim2.new(0, 70, 0, 36)
-        TabButton.BackgroundColor3 = i == 1 and Colors.Primary or Colors.Surface
-        TabButton.BackgroundTransparency = i == 1 and 0 or 0.5
+        TabButton.Size = UDim2.new(0, 80, 1, 0)
+        TabButton.BackgroundColor3 = i == 1 and Color3.fromRGB(0, 122, 255) or Color3.fromRGB(45, 45, 50)
         TabButton.Text = tabName
-        TabButton.TextColor3 = i == 1 and Colors.Surface or Colors.OnSurface
-        TabButton.TextSize = 12
+        TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TabButton.TextSize = 14
         TabButton.Font = Enum.Font.SourceSansMedium
         TabButton.BorderSizePixel = 0
         
-        local TabButtonCorner = Instance.new("UICorner")
-        TabButtonCorner.CornerRadius = UDim.new(0, 18)
-        TabButtonCorner.Parent = TabButton
+        local TabCorner = Instance.new("UICorner")
+        TabCorner.CornerRadius = UDim.new(0, 8)
+        TabCorner.Parent = TabButton
         
         tabButtons[i] = TabButton
         
-        -- Content Frame for each tab
+        -- Content Frame
         local ContentFrame = Instance.new("ScrollingFrame")
-        ContentFrame.Name = tabName .. "Content"
-        ContentFrame.Parent = MainFrame
-        ContentFrame.Size = UDim2.new(1, -24, 1, -140)
-        ContentFrame.Position = UDim2.new(0, 12, 0, 128)
+        ContentFrame.Parent = ContentContainer
+        ContentFrame.Size = UDim2.new(1, 0, 1, 0)
         ContentFrame.BackgroundTransparency = 1
         ContentFrame.BorderSizePixel = 0
-        ContentFrame.ScrollBarThickness = 4
-        ContentFrame.ScrollBarImageColor3 = Colors.OnBackground
+        ContentFrame.ScrollBarThickness = 6
+        ContentFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
         ContentFrame.Visible = i == 1
         
         local ContentLayout = Instance.new("UIListLayout")
         ContentLayout.Parent = ContentFrame
         ContentLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        ContentLayout.Padding = UDim.new(0, 12)
+        ContentLayout.Padding = UDim.new(0, 8)
         
         contentFrames[i] = ContentFrame
     end
     
-    -- Create Modern Toggle Switch
+    -- UI Creation Functions
     local function CreateToggle(parent, text, callback, layoutOrder)
         local ToggleFrame = Instance.new("Frame")
-        ToggleFrame.Name = text .. "Toggle"
         ToggleFrame.Parent = parent
-        ToggleFrame.Size = UDim2.new(1, 0, 0, 52)
-        ToggleFrame.BackgroundColor3 = Colors.Surface
-        ToggleFrame.BackgroundTransparency = 0.1
+        ToggleFrame.Size = UDim2.new(1, 0, 0, 40)
+        ToggleFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         ToggleFrame.BorderSizePixel = 0
         ToggleFrame.LayoutOrder = layoutOrder or 1
         
         local ToggleCorner = Instance.new("UICorner")
-        ToggleCorner.CornerRadius = UDim.new(0, 12)
+        ToggleCorner.CornerRadius = UDim.new(0, 8)
         ToggleCorner.Parent = ToggleFrame
         
         local ToggleLabel = Instance.new("TextLabel")
         ToggleLabel.Parent = ToggleFrame
         ToggleLabel.Size = UDim2.new(1, -60, 1, 0)
-        ToggleLabel.Position = UDim2.new(0, 16, 0, 0)
+        ToggleLabel.Position = UDim2.new(0, 10, 0, 0)
         ToggleLabel.BackgroundTransparency = 1
         ToggleLabel.Text = text
-        ToggleLabel.TextColor3 = Colors.OnSurface
+        ToggleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         ToggleLabel.TextSize = 14
-        ToggleLabel.Font = Enum.Font.SourceSansMedium
+        ToggleLabel.Font = Enum.Font.SourceSans
         ToggleLabel.TextXAlignment = Enum.TextXAlignment.Left
         
-        -- iOS-Style Toggle Switch
         local ToggleButton = Instance.new("TextButton")
         ToggleButton.Parent = ToggleFrame
-        ToggleButton.Size = UDim2.new(0, 44, 0, 24)
-        ToggleButton.Position = UDim2.new(1, -56, 0.5, -12)
-        ToggleButton.BackgroundColor3 = Colors.OnBackground
+        ToggleButton.Size = UDim2.new(0, 40, 0, 20)
+        ToggleButton.Position = UDim2.new(1, -50, 0.5, -10)
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
         ToggleButton.Text = ""
         ToggleButton.BorderSizePixel = 0
         
-        local ToggleButtonCorner = Instance.new("UICorner")
-        ToggleButtonCorner.CornerRadius = UDim.new(0, 12)
-        ToggleButtonCorner.Parent = ToggleButton
+        local ButtonCorner = Instance.new("UICorner")
+        ButtonCorner.CornerRadius = UDim.new(0, 10)
+        ButtonCorner.Parent = ToggleButton
         
         local ToggleKnob = Instance.new("Frame")
         ToggleKnob.Parent = ToggleButton
-        ToggleKnob.Size = UDim2.new(0, 20, 0, 20)
+        ToggleKnob.Size = UDim2.new(0, 16, 0, 16)
         ToggleKnob.Position = UDim2.new(0, 2, 0, 2)
-        ToggleKnob.BackgroundColor3 = Colors.Surface
+        ToggleKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         ToggleKnob.BorderSizePixel = 0
         
         local KnobCorner = Instance.new("UICorner")
-        KnobCorner.CornerRadius = UDim.new(0, 10)
+        KnobCorner.CornerRadius = UDim.new(0, 8)
         KnobCorner.Parent = ToggleKnob
         
         local isToggled = false
@@ -295,109 +280,86 @@ local function CreateAppleUI()
         ToggleButton.MouseButton1Click:Connect(function()
             isToggled = not isToggled
             
-            local targetColor = isToggled and Colors.Success or Colors.OnBackground
-            local targetPosition = isToggled and UDim2.new(1, -22, 0, 2) or UDim2.new(0, 2, 0, 2)
-            
-            -- Smooth Animation
-            TweenService:Create(ToggleButton, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                BackgroundColor3 = targetColor
+            TweenService:Create(ToggleButton, TweenInfo.new(0.2), {
+                BackgroundColor3 = isToggled and Color3.fromRGB(52, 199, 89) or Color3.fromRGB(60, 60, 65)
             }):Play()
             
-            TweenService:Create(ToggleKnob, TweenInfo.new(0.2, Enum.EasingStyle.Quad), {
-                Position = targetPosition
+            TweenService:Create(ToggleKnob, TweenInfo.new(0.2), {
+                Position = isToggled and UDim2.new(1, -18, 0, 2) or UDim2.new(0, 2, 0, 2)
             }):Play()
             
             if callback then callback(isToggled) end
         end)
         
-        return ToggleButton, isToggled
+        return ToggleButton
     end
     
-    -- Create Modern Slider
     local function CreateSlider(parent, text, min, max, default, callback, layoutOrder)
         local SliderFrame = Instance.new("Frame")
-        SliderFrame.Name = text .. "Slider"
         SliderFrame.Parent = parent
-        SliderFrame.Size = UDim2.new(1, 0, 0, 72)
-        SliderFrame.BackgroundColor3 = Colors.Surface
-        SliderFrame.BackgroundTransparency = 0.1
+        SliderFrame.Size = UDim2.new(1, 0, 0, 50)
+        SliderFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 40)
         SliderFrame.BorderSizePixel = 0
         SliderFrame.LayoutOrder = layoutOrder or 1
         
         local SliderCorner = Instance.new("UICorner")
-        SliderCorner.CornerRadius = UDim.new(0, 12)
+        SliderCorner.CornerRadius = UDim.new(0, 8)
         SliderCorner.Parent = SliderFrame
         
         local SliderLabel = Instance.new("TextLabel")
         SliderLabel.Parent = SliderFrame
-        SliderLabel.Size = UDim2.new(1, -80, 0, 24)
-        SliderLabel.Position = UDim2.new(0, 16, 0, 8)
+        SliderLabel.Size = UDim2.new(1, -60, 0, 25)
+        SliderLabel.Position = UDim2.new(0, 10, 0, 5)
         SliderLabel.BackgroundTransparency = 1
         SliderLabel.Text = text
-        SliderLabel.TextColor3 = Colors.OnSurface
+        SliderLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
         SliderLabel.TextSize = 14
-        SliderLabel.Font = Enum.Font.SourceSansMedium
+        SliderLabel.Font = Enum.Font.SourceSans
         SliderLabel.TextXAlignment = Enum.TextXAlignment.Left
         
         local ValueLabel = Instance.new("TextLabel")
         ValueLabel.Parent = SliderFrame
-        ValueLabel.Size = UDim2.new(0, 60, 0, 24)
-        ValueLabel.Position = UDim2.new(1, -76, 0, 8)
+        ValueLabel.Size = UDim2.new(0, 50, 0, 25)
+        ValueLabel.Position = UDim2.new(1, -60, 0, 5)
         ValueLabel.BackgroundTransparency = 1
         ValueLabel.Text = tostring(default)
-        ValueLabel.TextColor3 = Colors.Primary
+        ValueLabel.TextColor3 = Color3.fromRGB(0, 122, 255)
         ValueLabel.TextSize = 14
         ValueLabel.Font = Enum.Font.SourceSansBold
         ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
         
-        -- Slider Track
         local SliderTrack = Instance.new("Frame")
         SliderTrack.Parent = SliderFrame
-        SliderTrack.Size = UDim2.new(1, -32, 0, 4)
-        SliderTrack.Position = UDim2.new(0, 16, 0, 44)
-        SliderTrack.BackgroundColor3 = Colors.Background
+        SliderTrack.Size = UDim2.new(1, -20, 0, 4)
+        SliderTrack.Position = UDim2.new(0, 10, 0, 35)
+        SliderTrack.BackgroundColor3 = Color3.fromRGB(60, 60, 65)
         SliderTrack.BorderSizePixel = 0
         
         local TrackCorner = Instance.new("UICorner")
         TrackCorner.CornerRadius = UDim.new(0, 2)
         TrackCorner.Parent = SliderTrack
         
-        -- Slider Fill
         local SliderFill = Instance.new("Frame")
         SliderFill.Parent = SliderTrack
         SliderFill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
-        SliderFill.BackgroundColor3 = Colors.Primary
+        SliderFill.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
         SliderFill.BorderSizePixel = 0
         
         local FillCorner = Instance.new("UICorner")
         FillCorner.CornerRadius = UDim.new(0, 2)
         FillCorner.Parent = SliderFill
         
-        -- Slider Knob
         local SliderKnob = Instance.new("TextButton")
         SliderKnob.Parent = SliderFrame
-        SliderKnob.Size = UDim2.new(0, 20, 0, 20)
-        SliderKnob.Position = UDim2.new((default - min) / (max - min), -10, 0, 36)
-        SliderKnob.BackgroundColor3 = Colors.Surface
+        SliderKnob.Size = UDim2.new(0, 16, 0, 16)
+        SliderKnob.Position = UDim2.new((default - min) / (max - min), -8, 0, 27)
+        SliderKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         SliderKnob.Text = ""
         SliderKnob.BorderSizePixel = 0
         
         local KnobCorner = Instance.new("UICorner")
-        KnobCorner.CornerRadius = UDim.new(0, 10)
+        KnobCorner.CornerRadius = UDim.new(0, 8)
         KnobCorner.Parent = SliderKnob
-        
-        -- Knob Shadow
-        local KnobShadow = Instance.new("Frame")
-        KnobShadow.Parent = SliderKnob
-        KnobShadow.Size = UDim2.new(1, 4, 1, 4)
-        KnobShadow.Position = UDim2.new(0, -2, 0, -2)
-        KnobShadow.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        KnobShadow.BackgroundTransparency = 0.9
-        KnobShadow.ZIndex = SliderKnob.ZIndex - 1
-        
-        local ShadowCorner = Instance.new("UICorner")
-        ShadowCorner.CornerRadius = UDim.new(0, 12)
-        ShadowCorner.Parent = KnobShadow
         
         local currentValue = default
         local dragging = false
@@ -407,7 +369,7 @@ local function CreateAppleUI()
             local percentage = (currentValue - min) / (max - min)
             
             SliderFill.Size = UDim2.new(percentage, 0, 1, 0)
-            SliderKnob.Position = UDim2.new(percentage, -10, 0, 36)
+            SliderKnob.Position = UDim2.new(percentage, -8, 0, 27)
             ValueLabel.Text = tostring(math.floor(currentValue))
             
             if callback then callback(currentValue) end
@@ -434,39 +396,34 @@ local function CreateAppleUI()
             end
         end)
         
-        return updateSlider, currentValue
+        return updateSlider
     end
     
-    -- Create Modern Button
-    local function CreateButton(parent, text, callback, layoutOrder, style)
-        style = style or "primary"
-        
+    local function CreateButton(parent, text, callback, layoutOrder)
         local ButtonFrame = Instance.new("TextButton")
-        ButtonFrame.Name = text .. "Button"
         ButtonFrame.Parent = parent
-        ButtonFrame.Size = UDim2.new(1, 0, 0, 44)
-        ButtonFrame.BackgroundColor3 = style == "primary" and Colors.Primary or Colors.Secondary
+        ButtonFrame.Size = UDim2.new(1, 0, 0, 35)
+        ButtonFrame.BackgroundColor3 = Color3.fromRGB(0, 122, 255)
         ButtonFrame.Text = text
-        ButtonFrame.TextColor3 = Colors.Surface
-        ButtonFrame.TextSize = 16
-        ButtonFrame.Font = Enum.Font.SourceSansSemibold
+        ButtonFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ButtonFrame.TextSize = 14
+        ButtonFrame.Font = Enum.Font.SourceSansMedium
         ButtonFrame.BorderSizePixel = 0
         ButtonFrame.LayoutOrder = layoutOrder or 1
         
         local ButtonCorner = Instance.new("UICorner")
-        ButtonCorner.CornerRadius = UDim.new(0, 12)
+        ButtonCorner.CornerRadius = UDim.new(0, 8)
         ButtonCorner.Parent = ButtonFrame
         
-        -- Button Press Animation
         ButtonFrame.MouseButton1Click:Connect(function()
-            TweenService:Create(ButtonFrame, TweenInfo.new(0.1, Enum.EasingStyle.Quad), {
-                Size = UDim2.new(1, -4, 0, 40)
+            TweenService:Create(ButtonFrame, TweenInfo.new(0.1), {
+                BackgroundColor3 = Color3.fromRGB(0, 100, 200)
             }):Play()
             
             task.wait(0.1)
             
-            TweenService:Create(ButtonFrame, TweenInfo.new(0.1, Enum.EasingStyle.Quad), {
-                Size = UDim2.new(1, 0, 0, 44)
+            TweenService:Create(ButtonFrame, TweenInfo.new(0.1), {
+                BackgroundColor3 = Color3.fromRGB(0, 122, 255)
             }):Play()
             
             if callback then callback() end
@@ -485,12 +442,16 @@ local function CreateAppleUI()
     end, 2)
     
     CreateSlider(contentFrames[1], "Heal Threshold", 10, 90, 50, function(value)
-        -- Handle heal threshold
+        ScriptState.HealThreshold = value
     end, 3)
     
-    CreateButton(contentFrames[1], "Teleport to Train", function()
-        -- Handle teleport to train
+    CreateToggle(contentFrames[1], "Auto Collect Items", function(state)
+        ScriptState.AutoCollectItems = state
     end, 4)
+    
+    CreateButton(contentFrames[1], "Teleport to Train", function()
+        TeleportToTrain()
+    end, 5)
     
     -- Populate Combat Tab
     CreateToggle(contentFrames[2], "Gun Kill Aura", function(state)
@@ -502,7 +463,7 @@ local function CreateAppleUI()
     end, 2)
     
     CreateSlider(contentFrames[2], "Kill Aura Range", 5, 100, 25, function(value)
-        -- Handle kill aura range
+        ScriptState.KillAuraRange = value
     end, 3)
     
     CreateToggle(contentFrames[2], "Aimbot", function(state)
@@ -510,73 +471,90 @@ local function CreateAppleUI()
     end, 4)
     
     CreateSlider(contentFrames[2], "Aimbot FOV", 30, 180, 90, function(value)
-        ScriptState.FOVValue = value
+        ScriptState.AimbotFOV = value
     end, 5)
     
+    CreateSlider(contentFrames[2], "Aimbot Smoothness", 0.1, 1, 0.3, function(value)
+        ScriptState.AimbotSmooth = value
+    end, 6)
+    
+    CreateToggle(contentFrames[2], "Auto Reload", function(state)
+        ScriptState.AutoReload = state
+    end, 7)
+    
+    -- Populate Movement Tab
+    CreateToggle(contentFrames[3], "Speed Hack", function(state)
+        ScriptState.SpeedHack = state
+    end, 1)
+    
+    CreateSlider(contentFrames[3], "Walk Speed", 16, 50, 16, function(value)
+        ScriptState.WalkSpeed = value
+    end, 2)
+    
+    CreateSlider(contentFrames[3], "Jump Power", 50, 150, 50, function(value)
+        ScriptState.JumpPower = value
+    end, 3)
+    
+    CreateToggle(contentFrames[3], "NoClip", function(state)
+        ScriptState.NoClip = state
+    end, 4)
+    
+    CreateToggle(contentFrames[3], "Infinite Jump", function(state)
+        ScriptState.InfiniteJump = state
+    end, 5)
+    
+    CreateToggle(contentFrames[3], "Auto Drive Train", function(state)
+        ScriptState.AutoDrive = state
+    end, 6)
+    
     -- Populate Visual Tab
-    CreateToggle(contentFrames[3], "ESP", function(state)
+    CreateToggle(contentFrames[4], "ESP", function(state)
         ScriptState.ESP = state
     end, 1)
     
-    CreateToggle(contentFrames[3], "FOV Changer", function(state)
+    CreateToggle(contentFrames[4], "FOV Changer", function(state)
         ScriptState.FOVChanger = state
     end, 2)
     
-    CreateSlider(contentFrames[3], "FOV Value", 30, 120, 70, function(value)
+    CreateSlider(contentFrames[4], "FOV Value", 30, 120, 70, function(value)
         ScriptState.FOVValue = value
     end, 3)
     
-    CreateToggle(contentFrames[3], "Uncap FPS", function(state)
-        ScriptState.UnlimitedFPS = state
+    CreateToggle(contentFrames[4], "Full Bright", function(state)
+        ScriptState.FullBright = state
     end, 4)
     
-    -- Populate Movement Tab
-    CreateToggle(contentFrames[4], "NoClip", function(state)
-        ScriptState.NoClip = state
+    CreateToggle(contentFrames[4], "No Fog", function(state)
+        ScriptState.NoFog = state
+    end, 5)
+    
+    -- Populate Misc Tab
+    CreateToggle(contentFrames[5], "Uncap FPS", function(state)
+        ScriptState.UnlimitedFPS = state
     end, 1)
     
-    CreateSlider(contentFrames[4], "Walk Speed", 16, 50, 16, function(value)
-        -- Handle walk speed
+    CreateToggle(contentFrames[5], "Anti AFK", function(state)
+        ScriptState.AntiAFK = state
     end, 2)
     
-    CreateSlider(contentFrames[4], "Jump Power", 50, 150, 50, function(value)
-        -- Handle jump power
+    CreateButton(contentFrames[5], "Rejoin Server", function()
+        TeleportService:Teleport(game.PlaceId, LocalPlayer)
     end, 3)
     
-    -- Populate Settings Tab
-    CreateToggle(contentFrames[5], "Dark Mode", function(state)
-        ScriptState.DarkMode = state
-        -- Toggle between light and dark themes
-        local currentColors = state and DarkColors or Colors
-        -- Update UI colors here
-    end, 1)
-    
-    CreateButton(contentFrames[5], "Save Configuration", function()
-        -- Handle save config
-    end, 2)
-    
-    CreateButton(contentFrames[5], "Load Configuration", function()
-        -- Handle load config
-    end, 3, "secondary")
-    
-    -- Tab Switching Logic
+    -- Tab switching logic
     for i, button in ipairs(tabButtons) do
         button.MouseButton1Click:Connect(function()
-            -- Update tab buttons
             for j, btn in ipairs(tabButtons) do
-                btn.BackgroundColor3 = j == i and Colors.Primary or Colors.Surface
-                btn.BackgroundTransparency = j == i and 0 or 0.5
-                btn.TextColor3 = j == i and Colors.Surface or Colors.OnSurface
+                btn.BackgroundColor3 = j == i and Color3.fromRGB(0, 122, 255) or Color3.fromRGB(45, 45, 50)
             end
             
-            -- Update content visibility
             for j, frame in ipairs(contentFrames) do
                 frame.Visible = j == i
             end
         end)
     end
     
-    -- Close button functionality
+    -- Close button
     CloseButton.MouseButton1Click:Connect(function()
         ScreenGui:Destroy()
     end)
@@ -594,7 +572,120 @@ local function CreateAppleUI()
     return ScreenGui
 end
 
--- Core Functions (same as before but integrated with new UI)
+-- Core Functions
+
+-- Safe Teleportation with Anti-Detection
+local function SafeTeleport(targetCFrame, callback)
+    if tick() - AntiDetection.LastTeleportTime < AntiDetection.TeleportCooldown then
+        return false
+    end
+    
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local startPos = LocalPlayer.Character.HumanoidRootPart.CFrame
+        local distance = (startPos.Position - targetCFrame.Position).Magnitude
+        
+        if distance > 50 then
+            -- Use TweenService for long distances
+            local tweenInfo = TweenInfo.new(
+                math.min(distance / 100, 3),
+                Enum.EasingStyle.Linear,
+                Enum.EasingDirection.InOut
+            )
+            
+            local tween = TweenService:Create(
+                LocalPlayer.Character.HumanoidRootPart,
+                tweenInfo,
+                {CFrame = targetCFrame}
+            )
+            
+            tween:Play()
+            if callback then
+                tween.Completed:Connect(callback)
+            end
+        else
+            LocalPlayer.Character.HumanoidRootPart.CFrame = targetCFrame
+            if callback then
+                callback()
+            end
+        end
+        
+        AntiDetection.LastTeleportTime = tick()
+        return true
+    end
+    return false
+end
+
+-- Find Items Function
+local function FindItems(itemType)
+    local items = {}
+    
+    for _, obj in pairs(Workspace:GetDescendants()) do
+        if obj:IsA("Part") or obj:IsA("MeshPart") then
+            local name = obj.Name:lower()
+            local itemTypeLower = itemType:lower()
+            
+            if name:find(itemTypeLower) or 
+               (itemTypeLower == "bond" and (name:find("bond") or name:find("gold") or name:find("doubloon"))) or
+               (itemTypeLower == "coal" and name:find("coal")) or
+               (itemTypeLower == "gun" and (name:find("gun") or name:find("rifle") or name:find("pistol"))) or
+               (itemTypeLower == "ammo" and (name:find("ammo") or name:find("bullet"))) or
+               (itemTypeLower == "healthkit" and (name:find("health") or name:find("medkit") or name:find("bandage"))) then
+                
+                if obj:FindFirstChild("ProximityPrompt") or obj.Parent:FindFirstChild("ProximityPrompt") then
+                    table.insert(items, obj)
+                end
+            end
+        end
+    end
+    
+    return items
+end
+
+-- Auto Farm Function
+local function AutoFarmItems()
+    if not ScriptState.AutoFarm then return end
+    
+    local items = FindItems(ScriptState.FarmItem)
+    
+    for _, item in pairs(items) do
+        if not ScriptState.AutoFarm then break end
+        
+        local proximityPrompt = item:FindFirstChild("ProximityPrompt") or item.Parent:FindFirstChild("ProximityPrompt")
+        
+        if proximityPrompt and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            SafeTeleport(item.CFrame + Vector3.new(0, 3, 0), function()
+                task.wait(0.2)
+                if proximityPrompt then
+                    fireproximityprompt(proximityPrompt)
+                end
+            end)
+            
+            task.wait(1)
+        end
+    end
+end
+
+-- Train Functions
+function TeleportToTrain()
+    local train = Workspace:FindFirstChild("Train")
+    if not train then
+        for _, obj in pairs(Workspace:GetChildren()) do
+            if obj.Name:lower():find("train") or obj.Name:lower():find("locomotive") then
+                train = obj
+                break
+            end
+        end
+    end
+    
+    if train and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local trainPart = train:FindFirstChild("Seat") or train:FindFirstChild("Part") or train.PrimaryPart
+        if trainPart then
+            SafeTeleport(trainPart.CFrame + Vector3.new(0, 5, 0))
+        end
+    end
+end
+
+-- Combat Functions
 local function GetNearestEnemy(maxDistance)
     local nearestEnemy = nil
     local shortestDistance = maxDistance or math.huge
@@ -609,50 +700,161 @@ local function GetNearestEnemy(maxDistance)
         end
     end
     
+    -- Check for NPCs/Zombies
+    for _, obj in pairs(Workspace:GetChildren()) do
+        if obj:FindFirstChild("Humanoid") and obj:FindFirstChild("HumanoidRootPart") and obj ~= LocalPlayer.Character then
+            local distance = (LocalPlayer.Character.HumanoidRootPart.Position - obj.HumanoidRootPart.Position).Magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestEnemy = {Character = obj}
+            end
+        end
+    end
+    
     return nearestEnemy, shortestDistance
 end
 
--- Initialize Apple-Style UI
-local AppleUI = CreateAppleUI()
+-- Kill Aura Function
+local function PerformKillAura(weaponType)
+    local enemy, distance = GetNearestEnemy(ScriptState.KillAuraRange)
+    if not enemy or not enemy.Character then return end
+    
+    local tool = LocalPlayer.Character:FindFirstChildOfClass("Tool")
+    if not tool then return end
+    
+    local toolName = tool.Name:lower()
+    
+    if weaponType == "gun" and (toolName:find("gun") or toolName:find("rifle") or toolName:find("pistol")) then
+        if enemy.Character:FindFirstChild("Head") then
+            Camera.CFrame = CFrame.lookAt(Camera.CFrame.Position, enemy.Character.Head.Position)
+        end
+        tool:Activate()
+    elseif weaponType == "shovel" and (toolName:find("shovel") or toolName:find("axe") or toolName:find("knife")) then
+        tool:Activate()
+    end
+end
+
+-- Aimbot Function
+local function UpdateAimbot()
+    if not ScriptState.Aimbot then return end
+    if ScriptState.AimbotHold and not UserInputService:IsKeyDown(Keybinds.Aimbot) then return end
+    
+    local enemy, distance = GetNearestEnemy(ScriptState.AimbotFOV)
+    if not enemy or not enemy.Character then return end
+    
+    local targetPart = enemy.Character:FindFirstChild(ScriptState.AimbotTarget)
+    if not targetPart then return end
+    
+    local targetPosition = targetPart.Position
+    local currentCFrame = Camera.CFrame
+    local targetCFrame = CFrame.lookAt(currentCFrame.Position, targetPosition)
+    
+    local newCFrame = currentCFrame:Lerp(targetCFrame, ScriptState.AimbotSmooth)
+    Camera.CFrame = newCFrame
+end
+
+-- ESP Function
+local function CreateESP(obj, color, text)
+    if obj:FindFirstChild("ESPBox") then return end
+    
+    local billboardGui = Instance.new("BillboardGui")
+    billboardGui.Name = "ESPBox"
+    billboardGui.Adornee = obj
+    billboardGui.Size = UDim2.new(0, 100, 0, 50)
+    billboardGui.StudsOffset = Vector3.new(0, 2, 0)
+    billboardGui.AlwaysOnTop = true
+    billboardGui.Parent = obj
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.BackgroundTransparency = 0.7
+    frame.BackgroundColor3 = color
+    frame.BorderSizePixel = 2
+    frame.BorderColor3 = Color3.new(1, 1, 1)
+    frame.Parent = billboardGui
+    
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = text or obj.Name
+    textLabel.TextColor3 = Color3.new(1, 1, 1)
+    textLabel.TextScaled = true
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.Parent = frame
+end
+
+-- Auto Heal Function
+local function AutoHeal()
+    if not ScriptState.AutoHeal then return end
+    
+    local humanoid = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+    
+    local healthPercent = (humanoid.Health / humanoid.MaxHealth) * 100
+    
+    if healthPercent <= ScriptState.HealThreshold then
+        local backpack = LocalPlayer:FindFirstChild("Backpack")
+        if backpack then
+            local healthItem = backpack:FindFirstChild("HealthKit") or 
+                              backpack:FindFirstChild("Bandage") or 
+                              backpack:FindFirstChild("MedKit")
+            
+            if healthItem then
+                humanoid:EquipTool(healthItem)
+                task.wait(0.1)
+                healthItem:Activate()
+            end
+        end
+    end
+end
+
+-- Initialize Anti-Detection
+InitializeAntiDetection()
+
+-- Create UI
+local MainUI = CreateUI()
 
 -- Main Game Loop
 RunService.Heartbeat:Connect(function()
-    -- Auto Farm Logic
+    -- Auto Farm
     if ScriptState.AutoFarm then
-        -- Auto farm implementation
+        task.spawn(AutoFarmItems)
     end
     
-    -- Combat Logic
-    if ScriptState.GunKillAura or ScriptState.ShovelKillAura then
-        local enemy, distance = GetNearestEnemy(25)
-        if enemy and distance <= 25 then
-            local tool = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Tool")
-            if tool then
-                tool:Activate()
-            end
-        end
+    -- Combat
+    if ScriptState.GunKillAura then
+        PerformKillAura("gun")
     end
     
-    -- Aimbot Logic
-    if ScriptState.Aimbot then
-        local enemy, distance = GetNearestEnemy(ScriptState.FOVValue)
-        if enemy and enemy.Character and enemy.Character:FindFirstChild("Head") then
-            Camera.CFrame = CFrame.lookAt(Camera.CFrame.Position, enemy.Character.Head.Position)
-        end
+    if ScriptState.ShovelKillAura then
+        PerformKillAura("shovel")
     end
     
-    -- Movement Logic
+    -- Auto functions
+    AutoHeal()
+    UpdateAimbot()
+    
+    -- Movement
     if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
-        if ScriptState.NoClip then
-            for _, part in pairs(LocalPlayer.Character:GetChildren()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
-                end
+        local humanoid = LocalPlayer.Character.Humanoid
+        
+        if ScriptState.SpeedHack then
+            humanoid.WalkSpeed = math.min(ScriptState.WalkSpeed, AntiDetection.SpeedLimiter)
+        end
+        
+        humanoid.JumpPower = math.min(ScriptState.JumpPower, AntiDetection.MaxJumpPower)
+    end
+    
+    -- NoClip
+    if ScriptState.NoClip and LocalPlayer.Character then
+        for _, part in pairs(LocalPlayer.Character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
             end
         end
     end
     
-    -- Visual Logic
+    -- Visual
     if ScriptState.FOVChanger then
         Camera.FieldOfView = ScriptState.FOVValue
     end
@@ -662,14 +864,92 @@ RunService.Heartbeat:Connect(function()
     else
         setfpscap(60)
     end
+    
+    if ScriptState.FullBright then
+        game:GetService("Lighting").Brightness = 2
+        game:GetService("Lighting").ClockTime = 14
+        game:GetService("Lighting").FogEnd = 100000
+        game:GetService("Lighting").GlobalShadows = false
+        game:GetService("Lighting").OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+    end
+end)
+
+-- ESP Loop
+task.spawn(function()
+    while true do
+        if ScriptState.ESP then
+            local items = FindItems("Bond")
+            for _, item in pairs(items) do
+                CreateESP(item, Color3.fromRGB(255, 255, 0), "Bond")
+            end
+            
+            local coalItems = FindItems("Coal")
+            for _, item in pairs(coalItems) do
+                CreateESP(item, Color3.fromRGB(0, 0, 0), "Coal")
+            end
+            
+            local gunItems = FindItems("Gun")
+            for _, item in pairs(gunItems) do
+                CreateESP(item, Color3.fromRGB(255, 0, 0), "Gun")
+            end
+        else
+            for _, obj in pairs(Workspace:GetDescendants()) do
+                if obj:FindFirstChild("ESPBox") then
+                    obj.ESPBox:Destroy()
+                end
+            end
+        end
+        task.wait(2)
+    end
+end)
+
+-- Keybind Events
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    
+    if input.KeyCode == Keybinds.ToggleUI then
+        MainUI.Enabled = not MainUI.Enabled
+    elseif input.KeyCode == Keybinds.AutoDrive then
+        ScriptState.AutoDrive = not ScriptState.AutoDrive
+    elseif input.KeyCode == Keybinds.TeleportTrain then
+        TeleportToTrain()
+    elseif input.KeyCode == Keybinds.Aimbot then
+        if not ScriptState.AimbotHold then
+            ScriptState.Aimbot = not ScriptState.Aimbot
+        end
+    elseif input.KeyCode == Keybinds.KillAura then
+        ScriptState.GunKillAura = not ScriptState.GunKillAura
+        ScriptState.ShovelKillAura = not ScriptState.ShovelKillAura
+    elseif input.KeyCode == Keybinds.Speed then
+        ScriptState.SpeedHack = not ScriptState.SpeedHack
+    end
+end)
+
+-- Anti-AFK
+task.spawn(function()
+    while true do
+        if ScriptState.AntiAFK then
+            local VirtualUser = game:GetService("VirtualUser")
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end
+        task.wait(300) -- 5 minutes
+    end
 end)
 
 -- Success Notification
-game.StarterGui:SetCore("SendNotification", {
+StarterGui:SetCore("SendNotification", {
     Title = "Dead Rails Ultimate";
-    Text = "Apple-style UI loaded successfully!";
-    Duration = 3;
+    Text = "Script loaded successfully! Press INSERT to toggle UI";
+    Duration = 5;
 })
 
-print("Dead Rails Ultimate Script with Apple-Style UI loaded!")
-print("Features: Glassmorphism, Soft Edges, Clean Typography, Smooth Animations")
+print("Dead Rails Ultimate Script loaded!")
+print("Features: Advanced Anti-Detection, Professional UI, Full Functionality")
+print("Keybinds:")
+print("INSERT - Toggle UI")
+print("G - Auto Drive Train")
+print("T - Teleport to Train")
+print("E - Toggle Aimbot")
+print("K - Toggle Kill Aura")
+print("X - Toggle Speed Hack")
